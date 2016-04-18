@@ -18,10 +18,10 @@ namespace SecurityMandatory2.Infrastructure
             manager.PasswordValidator = new CustomPasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
+                RequireNonLetterOrDigit = false,
                 RequireDigit = false,
-                RequireLowercase = true,
-                RequireUppercase = true
+                RequireLowercase = false,
+                RequireUppercase = false
             };
             manager.UserValidator = new CustomUserValidator(manager)
             {

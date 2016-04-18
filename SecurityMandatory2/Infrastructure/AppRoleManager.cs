@@ -7,12 +7,12 @@ using SecurityMandatory2.Models;
 
 namespace SecurityMandatory2.Infrastructure
 {
-    public class RoleAdminManager : RoleManager<RoleAdmin>, IDisposable
+    public class AppRoleManager : RoleManager<AppRole>, IDisposable
     {
-        public RoleAdminManager(RoleStore<RoleAdmin> store) : base(store) { }
-        public static RoleAdminManager Create(
-            IdentityFactoryOptions<RoleAdminManager> options,
+        public AppRoleManager(RoleStore<AppRole> store) : base(store) { }
+        public static AppRoleManager Create(
+            IdentityFactoryOptions<AppRoleManager> options,
             IOwinContext context)
-        { return new RoleAdminManager(new RoleStore<RoleAdmin>(context.Get<AppIdentityDbContext>())); }
+        { return new AppRoleManager(new RoleStore<AppRole>(context.Get<AppIdentityDbContext>())); }
     }
 }

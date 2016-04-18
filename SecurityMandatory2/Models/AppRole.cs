@@ -6,9 +6,9 @@ using System.Web;
 
 namespace SecurityMandatory2.Models
 {
-    public class RoleAdmin : IdentityRole
+    public class AppRole : IdentityRole
     {
-        public RoleAdmin() : base() { }
-        public RoleAdmin(string name) : base(name) { }
+        public AppRole() : base() { }
+        public AppRole(string name) : base(name) { }
     }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SecurityMandatory2.Controllers
 {
+    [Authorize(Roles = "Administrators")]
     public class AdminController : Controller
     {
         // GET: Admin
