@@ -12,6 +12,7 @@ namespace SecurityMandatory2.App_Start
         {
             app.CreatePerOwinContext(AppIdentityDbContext.Create);
             app.CreatePerOwinContext<AppUserManager>(AppUserManager.Create);
+            app.CreatePerOwinContext<RoleAdminManager>(RoleAdminManager.Create);
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
