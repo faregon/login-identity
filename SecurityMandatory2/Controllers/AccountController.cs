@@ -58,6 +58,10 @@ namespace SecurityMandatory2.Controllers
             AuthManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
+        public ActionResult Register()
+        {
+            return View();
+        }
         private IAuthenticationManager AuthManager
         {
             get
