@@ -17,9 +17,9 @@ namespace SecurityMandatory2.Infrastructure
 
             manager.PasswordValidator = new CustomPasswordValidator
             {
-                RequiredLength = 6,
+                RequiredLength = 8,
                 RequireNonLetterOrDigit = false,
-                RequireDigit = false,
+                RequireDigit = true,
                 RequireLowercase = false,
                 RequireUppercase = false
             };
