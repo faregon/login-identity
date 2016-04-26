@@ -16,12 +16,17 @@ namespace SecurityMandatory2.Models
         [Required]
         public string Email { get; set; }
         [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage ="Passwords are not matching")]
+        public string ConfirmPassword { get; set; }
+
     }
     public class LoginModel
     {
         [Required]
-        [RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$")]
         public string Name { get; set; }
         [Required]
         public string Password { get; set; }

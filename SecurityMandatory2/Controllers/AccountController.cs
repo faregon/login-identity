@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Owin.Security;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
+
 using Microsoft.AspNet.Identity.Owin;
 using SecurityMandatory2.Infrastructure;
 
@@ -58,9 +59,30 @@ namespace SecurityMandatory2.Controllers
             AuthManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
-        public ActionResult Register()
+        [AllowAnonymous]
+        public ActionResult SignUp()
         {
             return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<ActionResult> Register(CreateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                AppUser user = new AppUser { UserName = model.Name, Email = model.Email };
+                IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    AddErrorsFromResult(result);
+                }
+            }
+            return View(model);
         }
         private IAuthenticationManager AuthManager
         {
@@ -69,6 +91,14 @@ namespace SecurityMandatory2.Controllers
                 return HttpContext.GetOwinContext().Authentication;
             }
         }
+        private void AddErrorsFromResult(IdentityResult result)
+        {
+            foreach (string error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        }
+
 
         private AppUserManager UserManager
         {
