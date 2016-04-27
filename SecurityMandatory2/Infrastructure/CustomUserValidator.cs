@@ -21,9 +21,10 @@ namespace SecurityMandatory2.Infrastructure
             if (!user.Email.ToLower().EndsWith("@example.com"))
             {
                 var errors = result.Errors.ToList();
-                errors.Add("Only example.com email address are allowed!");
+                errors.Add("Only @example.com email address are allowed!");
                 result = new IdentityResult(errors);
             }
+
             return result;
         }
     }

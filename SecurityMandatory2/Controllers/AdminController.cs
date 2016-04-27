@@ -16,10 +16,12 @@ namespace SecurityMandatory2.Controllers
         {
             return View(UserManager.Users);
         }
+
         public ActionResult Create()
         {
             return View();
         }
+
         public async Task<ActionResult> Edit(string id)
         {
             AppUser user = await UserManager.FindByIdAsync(id);
@@ -84,6 +86,7 @@ namespace SecurityMandatory2.Controllers
         public async Task<ActionResult> Create(CreateModel model)
         {
             if (ModelState.IsValid)
+
             {
                 AppUser user = new AppUser { UserName = model.Name, Email = model.Email };
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);

@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.Owin.Security;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
-
 using Microsoft.AspNet.Identity.Owin;
 using SecurityMandatory2.Infrastructure;
-
+using System.Linq;
 
 namespace SecurityMandatory2.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        #region Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -63,35 +63,45 @@ namespace SecurityMandatory2.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult SignUp()
-        {
-            return View();
-        }
-
-        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
+
+        #endregion
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            //var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                AppUser user = new AppUser { UserName = model.Name, Email = model.Email };
+                AppUser user = new AppUser() { UserName = model.Name, Email = model.Email };
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
 
                     await SignInAsync(user, isPersistent: false);
+
+                    
+
+                    //AppIdentityDbContext context = new AppIdentityDbContext();
+
+                   
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
                     AddErrorsFromResult(result);
                 }
+            }
+            else
+            {
+                var errors = ModelState.Select(x => x.Value.Errors)
+                               .Where(y => y.Count > 0)
+                               .ToList();
+
             }
             return View(model);
         }
