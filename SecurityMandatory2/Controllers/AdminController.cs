@@ -32,6 +32,7 @@ namespace SecurityMandatory2.Controllers
                 return RedirectToAction("Index");
             }
         }
+
         [HttpPost]
         public async Task<ActionResult> Edit(string id, string email, string password)
         {
@@ -78,6 +79,7 @@ namespace SecurityMandatory2.Controllers
             }
             return View(user);
         }
+
         [HttpPost]
         public async Task<ActionResult> Create(CreateModel model)
         {

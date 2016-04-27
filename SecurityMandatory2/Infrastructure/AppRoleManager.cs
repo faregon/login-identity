@@ -10,9 +10,13 @@ namespace SecurityMandatory2.Infrastructure
     public class AppRoleManager : RoleManager<AppRole>, IDisposable
     {
         public AppRoleManager(RoleStore<AppRole> store) : base(store) { }
-        public static AppRoleManager Create(
-            IdentityFactoryOptions<AppRoleManager> options,
-            IOwinContext context)
-        { return new AppRoleManager(new RoleStore<AppRole>(context.Get<AppIdentityDbContext>())); }
+        public static AppRoleManager Create
+            (
+            IdentityFactoryOptions<AppRoleManager> options,IOwinContext context
+            )
+        {
+            return new AppRoleManager
+                (new RoleStore<AppRole>(context.Get<AppIdentityDbContext>()));
+        }
     }
 }

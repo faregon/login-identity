@@ -26,6 +26,7 @@ namespace SecurityMandatory2.Controllers
             ViewBag.returnUrl = returnUrl;
             return View();
         }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -53,21 +54,29 @@ namespace SecurityMandatory2.Controllers
             ViewBag.returnUrl = returnUrl;
             return View(details);
         }
+
         [Authorize]
         public ActionResult Logout()
         {
             AuthManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
+
         [AllowAnonymous]
         public ActionResult SignUp()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult Register()
         {
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public async Task<ActionResult> Register(CreateModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +84,9 @@ namespace SecurityMandatory2.Controllers
                 IdentityResult result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index");
+
+                    await SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -84,6 +95,16 @@ namespace SecurityMandatory2.Controllers
             }
             return View(model);
         }
+
+        private async Task SignInAsync(AppUser user, bool isPersistent)
+        {
+            AuthManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+            var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+
+ 
+            AuthManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
+        }
+
         private IAuthenticationManager AuthManager
         {
             get
@@ -91,6 +112,8 @@ namespace SecurityMandatory2.Controllers
                 return HttpContext.GetOwinContext().Authentication;
             }
         }
+
+
         private void AddErrorsFromResult(IdentityResult result)
         {
             foreach (string error in result.Errors)
